@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient: {{ patient.first_name }} {{ patient.last_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4 fade-in">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="display-5 mb-0">
+                    <i class="fas fa-user-circle me-3 text-primary"></i>{{ patient.first_name }} {{ patient.last_name }}
+                </h1>
+                <a href="{% url 'patient_list' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Patients
+                </a>
+            </div>
+            <p class="text-muted mt-2">
+                <i class="fas fa-id-card me-2"></i>MR Number: <span class="fw-bold">{{ patient.mr_number }}</span>
+            </p>
+            <hr class="my-4">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="fas fa-info-circle me-2 text-primary"></i>Patient Information</h3>
+                    <span class="badge bg-primary">
+                        {% if patient.gender == 'M' %}
+                            <i class="fas fa-male me-1"></i>Male
+                        {% elif patient.gender == 'F' %}
+                            <i class="fas fa-female me-1"></i>Female
+                        {% else %}
+                            <i class="fas fa-user me-1"></i>{{ patient.gender }}
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row patient-info">
+                        <div class="col-md-6">
+                            <p>
+                                <i class="fas fa-birthday-cake me-2 text-primary"></i>
+                                <strong>Date of Birth:</strong> {{ patient.date_of_birth|date:"F d, Y" }}
+                            </p>
+                            <p>
+                                <i class="fas fa-tint me-2 text-danger"></i>
+                                <strong>Blood Group:</strong> {{ patient.blood_group }}
+                            </p>
+                            <p>
+                                <i class="fas fa-envelope me-2 text-primary"></i>
+                                <strong>Email:</strong> {{ patient.email|default:"Not provided" }}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                                <strong>Address:</strong> {{ patient.address|default:"Not provided" }}
+                            </p>
+                            <p>
+                                <i class="fas fa-phone me-2 text-primary"></i>
+                                <strong>Contact:</strong> {{ patient.contact_number|default:"Not provided" }}
+                            </p>
+                            <p>
+                                <i class="fas fa-hospital me-2 text-primary"></i>
+                                <strong>Registered At:</strong> {{ patient.registered_at }}
+                                <small class="text-muted ms-2">({{ patient.registration_date|date:"M d, Y" }})</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="fas fa-clipboard-list me-2 text-primary"></i>Medical Records</h3>
+                    <a href="{% url 'add_patient_record' patient.mr_number %}" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-2"></i>Add New Record
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% for record in records %}
+                    <div class="card mb-3 medical-record">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-calendar-day me-2 text-primary"></i>
+                                <strong>{{ record.visit_date|date:"F d, Y" }}</strong>
+                            </div>
+                            <div>
+                                <i class="fas fa-user-md me-1"></i>
+                                Dr. {{ record.doctor.user.get_full_name }}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-stethoscope me-2 text-primary"></i>Diagnosis: {{ record.diagnosis }}
+                            </h5>
+                            <p class="card-text">
+                                <i class="fas fa-heartbeat me-2 text-danger"></i>
+                                <strong>Symptoms:</strong> {{ record.symptoms }}
+                            </p>
+                            <p class="card-text">
+                                <i class="fas fa-prescription-bottle-alt me-2 text-success"></i>
+                                <strong>Prescription:</strong> {{ record.prescription }}
+                            </p>
+                            {% if record.next_visit %}
+                            <p class="card-text">
+                                <i class="fas fa-calendar-plus me-2 text-info"></i>
+                                <strong>Next Visit:</strong> {{ record.next_visit|date:"F d, Y" }}
+                            </p>
+                            {% endif %}
+                            {% if record.notes %}
+                            <p class="card-text">
+                                <i class="fas fa-sticky-note me-2 text-warning"></i>
+                                <strong>Notes:</strong> {{ record.notes }}
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer text-muted text-end">
+                            <small><i class="fas fa-clock me-1"></i>Record created: {{ record.created_at|date:"M d, Y H:i" }}</small>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-clipboard text-muted mb-3" style="font-size: 3rem;"></i>
+                        <h5 class="text-muted">No medical records found</h5>
+                        <p class="text-muted mb-4">This patient doesn't have any medical records yet.</p>
+                        <a href="{% url 'add_patient_record' patient.mr_number %}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>Create First Medical Record
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

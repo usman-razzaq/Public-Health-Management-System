@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h4>Medical Records for {{ patient.first_name }} {{ patient.last_name }}</h4>
+            <p>MR Number: {{ patient.mr_number }}</p>
+        </div>
+        <div class="card-body">
+            {% if records %}
+                {% for record in records %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Visit Date: {{ record.visit_date }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Symptoms:</strong> {{ record.symptoms }}</p>
+                        <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
+                        <p><strong>Prescription:</strong> {{ record.prescription }}</p>
+                        {% if record.next_visit %}
+                        <p><strong>Next Visit:</strong> {{ record.next_visit }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">No medical records found.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

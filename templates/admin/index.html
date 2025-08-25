@@ -1,0 +1,122 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/dashboard.css' %}">
+<style>
+    .dashboard-panel {
+        background: #f8f9fa;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .dashboard-panel h2 {
+        margin-top: 0;
+        color: #333;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+    .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    .quick-action {
+        background: linear-gradient(135deg, #4e73df, #68749a);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 160px;
+        text-align: center;
+    }
+    .quick-action:hover {
+        background: linear-gradient(135deg, #224abe, #1a3894);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(78, 115, 223, 0.25);
+        text-decoration: none;
+    }
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+    .stat-card {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    .stat-card h3 {
+        margin-top: 0;
+        color: #666;
+    }
+    .stat-card p {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 10px 0 0;
+        color: #333;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-panel">
+    <h2>Quick Actions</h2>
+    <div class="quick-actions">
+        <a href="{% url 'admin:core_patient_add' %}" class="quick-action">Add New Patient</a>
+        <a href="{% url 'admin:core_patientrecord_add' %}" class="quick-action">Add Medical Record</a>
+        <a href="{% url 'admin:core_hospital_add' %}" class="quick-action">Add Hospital</a>
+        <a href="{% url 'admin:core_doctor_add' %}" class="quick-action">Add Doctor</a>
+    </div>
+</div>
+
+<div class="dashboard-panel">
+    <h2>Registration Forms</h2>
+    <div class="quick-actions">
+        <a href="{% url 'register_patient' %}" class="quick-action" style="background: linear-gradient(135deg, #36b9cc, #2a8a98);">Patient Registration</a>
+        <a href="{% url 'register_hospital' %}" class="quick-action" style="background: linear-gradient(135deg, #1cc88a, #169a67);">Hospital Registration</a>
+        <a href="{% url 'register_clinic' %}" class="quick-action" style="background: linear-gradient(135deg, #f6c23e, #dfa821);">Clinic Registration</a>
+        <a href="{% url 'register_doctor' %}" class="quick-action" style="background: linear-gradient(135deg, #e74a3b, #c23321);">Doctor Registration</a>
+    </div>
+</div>
+
+<div class="dashboard-panel">
+    <h2>System Statistics</h2>
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Total Patients</h3>
+            <p>{{ patient_count }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Doctors</h3>
+            <p>{{ doctor_count }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Hospitals</h3>
+            <p>{{ hospital_count }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Medical Records</h3>
+            <p>{{ record_count }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-panel">
+    <h2>Recent Activities</h2>
+    {{ recent_actions|safe }}
+</div>
+{% endblock %}

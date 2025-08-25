@@ -1,0 +1,165 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Login - Hospital Management System{% endblock %}
+
+{% block content %}
+<div class="container login-container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-9">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center mb-0">
+                        <i class="fas fa-hospital-user me-2"></i> Public Health Management System
+                    </h3>
+                </div>
+                {% if error %}
+                <div class="alert alert-danger m-3 mb-0">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <div class="card-body p-4">
+                    <ul class="nav nav-tabs" id="loginTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="hospital-tab" data-bs-toggle="tab" href="#hospital" role="tab" aria-controls="hospital" aria-selected="false">
+                                <i class="fas fa-hospital me-2"></i>Hospital Admin
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="doctor-tab" data-bs-toggle="tab" href="#doctor" role="tab" aria-controls="doctor" aria-selected="true">
+                                <i class="fas fa-user-md me-2"></i>Doctor(Clinic)
+                            </a>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="patient-tab" data-bs-toggle="tab" href="#patient" role="tab" aria-controls="patient" aria-selected="false">
+                                <i class="fas fa-procedures me-2"></i>Patient Records
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="loginTabsContent">
+                        <!-- Doctor Login -->
+                        <div class="tab-pane fade show active" id="doctor" role="tabpanel">
+                            <div class="p-4">
+                                <h4 class="text-center mb-4"><i class="fas fa-stethoscope me-2"></i>Doctor Access</h4>
+                                <form method="post" action="{% url 'login' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="user_type" value="doctor">
+                                    <div class="mb-3">
+                                        <label for="doctor-username" class="form-label">Username</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <input type="text" class="form-control" id="doctor-username" name="username" placeholder="Enter your username" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="doctor-password" class="form-label">Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                            <input type="password" class="form-control" id="doctor-password" name="password" placeholder="Enter your password" required>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid gap-2 mb-3">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt me-2"></i>Login as Doctor</button>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <a href="{% url 'password_reset' %}" class="text-decoration-none"><i class="fas fa-key me-1"></i>Forgot password?</a>
+                                        <a href="{% url 'register_clinic' %}" class="text-decoration-none"><i class="fas fa-clinic-medical me-1"></i>Register a Clinic</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                        <!-- Hospital Admin Login -->
+                        <div class="tab-pane fade" id="hospital" role="tabpanel">
+                            <div class="p-4">
+                                <h4 class="text-center mb-4"><i class="fas fa-hospital-alt me-2"></i>Hospital Administration</h4>
+                                <form method="post" action="{% url 'login' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="user_type" value="hospital_admin">
+                                    <div class="mb-3">
+                                        <label for="hospital-admin-username" class="form-label">Username</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <input type="text" class="form-control" id="hospital-admin-username" name="username" placeholder="Enter your username" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="hospital-admin-password" class="form-label">Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                            <input type="password" class="form-control" id="hospital-admin-password" name="password" placeholder="Enter your password" required>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid gap-2 mb-3">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt me-2"></i>Login as Hospital Admin</button>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <a href="{% url 'password_reset' %}" class="text-decoration-none"><i class="fas fa-key me-1"></i>Forgot password?</a>
+                                        <a href="{% url 'register_hospital' %}" class="text-decoration-none"><i class="fas fa-plus-circle me-1"></i>Register Hospital</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Patient Records Lookup -->
+                        <div class="tab-pane fade" id="patient" role="tabpanel">
+                            <div class="p-4">
+                                <h4 class="text-center mb-4"><i class="fas fa-clipboard-list me-2"></i>Patient Records Access</h4>
+                                <form method="get" action="{% url 'patient_record_lookup' %}">
+                                    <div class="mb-4">
+                                        <label for="mr-number" class="form-label">Medical Record (MR) Number</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                            <input type="text" class="form-control" id="mr-number" name="mr_number" placeholder="Enter your MR number" required>
+                                        </div>
+                                        <div class="mb-3 mt-3">
+                                            <label for="date-of-birth" class="form-label">Date of Birth</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                <input type="date" class="form-control" id="date-of-birth" name="date_of_birth" required>
+                                            </div>
+                                        </div>
+                                        <small class="form-text text-muted mt-2">Enter your medical record number to view your health records</small>
+                                    </div>
+                                    <div class="d-grid gap-2 mb-3">
+                                        <button type="submit" class="btn btn-info text-white"><i class="fas fa-search me-2"></i>View My Records</button>
+                                    </div>
+                                    <div class="mt-4 text-center">
+                                        <a href="{% url 'register_patient' %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-user-plus me-1"></i>Patient Registration</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <i class="fas fa-info-circle me-2 text-primary"></i>
+                        <small>Admin panel is only accessible through the <a href="/admin/" class="text-decoration-none fw-bold">admin link</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize tab functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        var triggerTabList = [].slice.call(document.querySelectorAll('#loginTabs a'))
+        triggerTabList.forEach(function (triggerEl) {
+            var tabTrigger = new bootstrap.Tab(triggerEl)
+            triggerEl.addEventListener('click', function (event) {
+                event.preventDefault()
+                tabTrigger.show()
+            })
+        })
+    });
+</script>
+{% endblock %}

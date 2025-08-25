@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Hospital Admin Dashboard - {{ hospital.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5">{{ hospital.name }} Dashboard</h1>
+            <p class="lead">Welcome to the hospital administration dashboard</p>
+        </div>
+    </div>
+
+    <!-- Quick Registration Links -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Quick Registration</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{% url 'register_patient' %}" class="btn btn-primary">Register Patient</a>
+                        <a href="{% url 'register_doctor' %}" class="btn btn-success">Register Doctor</a>
+                        <a href="{% url 'register_hospital' %}" class="btn btn-info">Register Hospital</a>
+                        <a href="{% url 'register_clinic' %}" class="btn btn-warning">Register Clinic</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Patients</h5>
+                    <h2 class="display-4">{{ patient_count }}</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="{% url 'patient_list' %}" class="text-white text-decoration-none">View Details</a>
+                    <i class="fas fa-angle-right text-white"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Doctors</h5>
+                    <h2 class="display-4">{{ doctor_count }}</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="#" class="text-white text-decoration-none">View Details</a>
+                    <i class="fas fa-angle-right text-white"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Medical Records</h5>
+                    <h2 class="display-4">{{ record_count }}</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="#" class="text-white text-decoration-none">View Details</a>
+                    <i class="fas fa-angle-right text-white"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Hospital Info</h5>
+                    <p>{{ hospital.address }}</p>
+                    <p>{{ hospital.contact_number }}</p>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="#" class="text-white text-decoration-none">Edit Details</a>
+                    <i class="fas fa-angle-right text-white"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Patients and Records -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Recent Patients</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_patients %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>MR Number</th>
+                                    <th>Name</th>
+                                    <th>Registration Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for patient in recent_patients %}
+                                <tr>
+                                    <td>{{ patient.mr_number }}</td>
+                                    <td>{{ patient.first_name }} {{ patient.last_name }}</td>
+                                    <td>{{ patient.registration_date }}</td>
+                                    <td>
+                                        <a href="{% url 'patient_detail' patient.mr_number %}" class="btn btn-sm btn-primary">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No recent patients.</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'patient_list' %}" class="btn btn-outline-primary">View All Patients</a>
+                    <a href="{% url 'add_patient' %}" class="btn btn-primary">Add New Patient</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Recent Medical Records</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_records %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Visit Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in recent_records %}
+                                <tr>
+                                    <td>{{ record.patient.first_name }} {{ record.patient.last_name }}</td>
+                                    <td>{{ record.doctor }}</td>
+                                    <td>{{ record.visit_date|date:"M d, Y" }}</td>
+                                    <td>
+                                        <a href="{% url 'patient_detail' record.patient.mr_number %}" class="btn btn-sm btn-success">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No recent medical records.</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-outline-success">View All Records</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

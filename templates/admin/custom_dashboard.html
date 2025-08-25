@@ -1,0 +1,368 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1><i class="fas fa-tachometer-alt"></i> Health Management Dashboard</h1>
+        <p class="dashboard-subtitle">Welcome to the Health Management System Administration</p>
+    </div>
+    
+    <!-- System Statistics Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-injured"></i></div>
+            <h2>Patients</h2>
+            <div class="stat-value">{{ patient_count }}</div>
+            <div class="stat-actions">
+                <a href="{% url 'admin:core_patient_changelist' %}" class="stat-link"><i class="fas fa-list"></i> View All</a>
+                <a href="{% url 'admin:core_patient_add' %}" class="stat-link"><i class="fas fa-plus"></i> Add New</a>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-md"></i></div>
+            <h2>Doctors</h2>
+            <div class="stat-value">{{ doctor_count }}</div>
+            <div class="stat-actions">
+                <a href="{% url 'admin:core_doctor_changelist' %}" class="stat-link"><i class="fas fa-list"></i> View All</a>
+                <a href="{% url 'admin:core_doctor_add' %}" class="stat-link"><i class="fas fa-plus"></i> Add New</a>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-hospital"></i></div>
+            <h2>Hospitals</h2>
+            <div class="stat-value">{{ hospital_count }}</div>
+            <div class="stat-actions">
+                <a href="{% url 'admin:core_hospital_changelist' %}" class="stat-link"><i class="fas fa-list"></i> View All</a>
+                <a href="{% url 'admin:core_hospital_add' %}" class="stat-link"><i class="fas fa-plus"></i> Add New</a>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-notes-medical"></i></div>
+            <h2>Records</h2>
+            <div class="stat-value">{{ record_count }}</div>
+            <div class="stat-actions">
+                <a href="{% url 'admin:core_patientrecord_changelist' %}" class="stat-link"><i class="fas fa-list"></i> View All</a>
+                <a href="{% url 'admin:core_patientrecord_add' %}" class="stat-link"><i class="fas fa-plus"></i> Add New</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Management Sections -->
+    <div class="dashboard-sections">
+        <!-- Patient Management -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-user-injured"></i> Patient Management</h2>
+            <div class="section-content">
+                <div class="action-buttons">
+                    <a href="{% url 'admin:core_patient_changelist' %}" class="action-button"><i class="fas fa-list"></i> All Patients</a>
+                    <a href="{% url 'admin:core_patient_add' %}" class="action-button"><i class="fas fa-user-plus"></i> Add Patient</a>
+                    <a href="{% url 'register_patient' %}" class="action-button"><i class="fas fa-clipboard"></i> Registration Form</a>
+                    <a href="{% url 'admin:core_patientrecord_changelist' %}" class="action-button"><i class="fas fa-file-medical"></i> Patient Records</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hospital Management -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-hospital"></i> Hospital Management</h2>
+            <div class="section-content">
+                <div class="action-buttons">
+                    <a href="{% url 'admin:core_hospital_changelist' %}" class="action-button"><i class="fas fa-list"></i> All Hospitals</a>
+                    <a href="{% url 'admin:core_hospital_add' %}" class="action-button"><i class="fas fa-plus"></i> Add Hospital</a>
+                    <a href="{% url 'register_hospital' %}" class="action-button"><i class="fas fa-clipboard"></i> Registration Form</a>
+                    <a href="{% url 'admin:core_hospitaladmin_changelist' %}" class="action-button"><i class="fas fa-user-shield"></i> Hospital Admins</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Clinic Management -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-clinic-medical"></i> Clinic Management</h2>
+            <div class="section-content">
+                <div class="action-buttons">
+                    <a href="{% url 'admin:core_clinic_changelist' %}" class="action-button"><i class="fas fa-list"></i> All Clinics</a>
+                    <a href="{% url 'admin:core_clinic_add' %}" class="action-button"><i class="fas fa-plus"></i> Add Clinic</a>
+                    <a href="{% url 'register_clinic' %}" class="action-button"><i class="fas fa-clipboard"></i> Registration Form</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Doctor Management -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-user-md"></i> Doctor Management</h2>
+            <div class="section-content">
+                <div class="action-buttons">
+                    <a href="{% url 'admin:core_doctor_changelist' %}" class="action-button"><i class="fas fa-list"></i> All Doctors</a>
+                    <a href="{% url 'admin:core_doctor_add' %}" class="action-button"><i class="fas fa-user-plus"></i> Add Doctor</a>
+                    <a href="{% url 'register_doctor' %}" class="action-button"><i class="fas fa-clipboard"></i> Registration Form</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Import Font Awesome */
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+    
+    /* Dashboard Base Styles */
+    .dashboard {
+        padding: 30px;
+        max-width: 1400px;
+        margin: 0 auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+    
+    /* Dashboard Header */
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 32px;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    
+    .dashboard-header .dashboard-subtitle {
+        font-size: 16px;
+        color: #6c757d;
+        margin: 0;
+    }
+    
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    
+    .stat-card {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #4e73df, #36b9cc);
+    }
+    
+    .stat-icon {
+        font-size: 36px;
+        margin-bottom: 15px;
+        color: #4e73df;
+    }
+    
+    .stat-card h2 {
+        margin-top: 0;
+        color: #2c3e50;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    .stat-value {
+        font-size: 42px;
+        font-weight: bold;
+        margin: 15px 0;
+        color: #4e73df;
+    }
+    
+    .stat-actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .stat-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 15px;
+        background-color: #f8f9fa;
+        color: #4e73df;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .stat-link:hover {
+        background-color: #4e73df;
+        color: #fff;
+    }
+    
+    .stat-link i {
+        margin-right: 5px;
+    }
+    
+    /* Dashboard Sections */
+     .dashboard-sections {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+         gap: 30px;
+         margin-top: 40px;
+     }
+     
+     .dashboard-section {
+         background-color: #fff;
+         border-radius: 12px;
+         padding: 25px;
+         box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+         transition: transform 0.3s ease, box-shadow 0.3s ease;
+         position: relative;
+         overflow: hidden;
+     }
+     
+     .dashboard-section:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+     }
+     
+     .dashboard-section::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 5px;
+     }
+     
+     .dashboard-section:nth-child(1)::before {
+         background: linear-gradient(90deg, #4e73df, #224abe);
+     }
+     
+     .dashboard-section:nth-child(2)::before {
+         background: linear-gradient(90deg, #1cc88a, #13855c);
+     }
+     
+     .dashboard-section:nth-child(3)::before {
+         background: linear-gradient(90deg, #36b9cc, #258391);
+     }
+     
+     .dashboard-section:nth-child(4)::before {
+         background: linear-gradient(90deg, #f6c23e, #dda20a);
+     }
+     
+     .dashboard-section h2 {
+         color: #2c3e50;
+         font-size: 22px;
+         font-weight: 600;
+         margin-top: 0;
+         margin-bottom: 20px;
+         display: flex;
+         align-items: center;
+     }
+     
+     .dashboard-section h2 i {
+         margin-right: 10px;
+         color: #4e73df;
+     }
+     
+     .dashboard-section:nth-child(2) h2 i {
+         color: #1cc88a;
+     }
+     
+     .dashboard-section:nth-child(3) h2 i {
+         color: #36b9cc;
+     }
+     
+     .dashboard-section:nth-child(4) h2 i {
+         color: #f6c23e;
+     }
+     
+     .section-content {
+         padding: 10px 0;
+     }
+     
+     /* Action Buttons */
+     .action-buttons {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 15px;
+         margin-top: 15px;
+     }
+     
+     .action-button {
+         display: inline-flex;
+         align-items: center;
+         padding: 12px 20px;
+         background-color: #000000;
+         color: white;
+         text-decoration: none;
+         border-radius: 8px;
+         font-size: 15px;
+         font-weight: 500;
+         transition: all 0.2s ease;
+         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+     }
+     
+     .action-button i {
+         margin-right: 8px;
+     }
+     
+     .action-button:hover {
+         background-color: #224abe;
+         transform: translateY(-2px);
+         box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+     }
+     
+     .dashboard-section:nth-child(2) .action-button {
+         background-color: #1cc88a;
+     }
+     
+     .dashboard-section:nth-child(2) .action-button:hover {
+         background-color: #13855c;
+     }
+     
+     .dashboard-section:nth-child(3) .action-button {
+         background-color: #36b9cc;
+     }
+     
+     .dashboard-section:nth-child(3) .action-button:hover {
+         background-color: #258391;
+     }
+     
+     .dashboard-section:nth-child(4) .action-button {
+         background-color: #f6c23e;
+     }
+     
+     .dashboard-section:nth-child(4) .action-button:hover {
+         background-color: #dda20a;
+     }
+     
+     /* Responsive Adjustments */
+     @media (max-width: 1200px) {
+         .dashboard-sections {
+             grid-template-columns: 1fr;
+         }
+     }
+</style>
+{% endblock %}

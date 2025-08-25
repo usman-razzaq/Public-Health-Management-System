@@ -1,0 +1,21 @@
+/* Custom admin dashboard styles */
+#content {
+    padding: 20px 40px;
+}
+
+.module {
+    margin-bottom: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.module h2 {
+    margin: 0;
+    padding: 15px;
+    font-size: 14px;
+    background: #79aec8;
+    color: #fff;
+    border-bottom: 1px solid #ddd;
+}

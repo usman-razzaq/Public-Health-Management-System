@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Patient{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Add New Patient</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form.mr_number.label_tag }}
+                {{ form.mr_number }}
+                {% if form.mr_number.errors %}
+                    <div class="text-danger">{{ form.mr_number.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.date_of_birth.label_tag }}
+                {{ form.date_of_birth }}
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form.gender.label_tag }}
+                {{ form.gender }}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.blood_group.label_tag }}
+                {{ form.blood_group }}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.registered_at.label_tag }}
+                {{ form.registered_at }}
+                {% if not form.registered_at.queryset.exists %}
+                    <div class="text-danger">No hospitals available. Please create hospitals first.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-3">
+        {{ form.address.label_tag }}
+        {{ form.address }}
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form.contact_number.label_tag }}
+                {{ form.contact_number }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Save Patient</button>
+    <a href="{% url 'patient_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

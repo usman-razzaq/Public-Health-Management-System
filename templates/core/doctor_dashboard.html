@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Welcome, Dr. {{ request.user.get_full_name }}</h2>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Your Patients</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for patient in patients %}
+                        <li class="list-group-item">
+                            <a href="{% url 'patient_detail' patient.mr_number %}">
+                                {{ patient.first_name }} {{ patient.last_name }} (MR: {{ patient.mr_number }})
+                            </a>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item">No patients found</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4>Recent Records</h4>
+                </div>
+                <div class="card-body">
+                    {% for record in recent_records %}
+                    <div class="mb-3">
+                        <strong>{{ record.visit_date }}</strong>
+                        <p>{{ record.patient }} - {{ record.diagnosis|truncatechars:50 }}</p>
+                    </div>
+                    {% empty %}
+                    <p>No recent records</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
